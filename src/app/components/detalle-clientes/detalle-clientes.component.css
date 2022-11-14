@@ -1,0 +1,13 @@
+.container{
+    
+    max-width: 950px;
+    margin: 0 auto;
+}
+table{
+    width: 100%;
+    background-color: rgb(92, 91, 91);
+    border-radius: 2%;
+}
+img{
+    width: 100px;
+}
