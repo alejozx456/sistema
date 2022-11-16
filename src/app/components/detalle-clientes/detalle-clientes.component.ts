@@ -4,7 +4,9 @@ import { MatTableDataSource } from '@angular/material/table';
 import { ActivatedRoute } from '@angular/router';
 import { ArcotelCliente } from 'src/app/models/arcotelCliente';
 import { Cliente } from 'src/app/models/cliente';
+import { ContratoArcotel } from 'src/app/models/contratoArcotel';
 import { detalleCliente } from 'src/app/models/detalleCliente';
+import { ServicioBombero } from 'src/app/models/servicioBombero';
 import { ApiService } from 'src/app/services/api.service';
 
 @Component({
@@ -19,11 +21,24 @@ export class DetalleClientesComponent implements OnInit {
   @ViewChild(MatPaginator) paginator:MatPaginator;
 
 
+  public columnsToDisplayArcotel=['Contrato','Servicio','Total']
+  public datasource2:any=new MatTableDataSource();
+  @ViewChild(MatPaginator) paginator2:MatPaginator;
+
+
+  public columnsToDisplayBombero=['Servicio','Cantidad']
+  public datasource3:any=new MatTableDataSource();
+  @ViewChild(MatPaginator) paginator3:MatPaginator;
+
+
   public datos:detalleCliente[];
   public nombreCliente:string;
   public apellidoCliente:string;
   public operadoraCliente:string;
   public cliente:Cliente[];
+
+
+  public datosBombero:ServicioBombero[];
 
 
 
@@ -37,12 +52,19 @@ export class DetalleClientesComponent implements OnInit {
   public generoClienteArcotel:string;
 
 
+  public datosArcotelContratos:ContratoArcotel[];
+
+
+
   constructor(private activateRoute:ActivatedRoute,private api:ApiService) { }
 
   ngOnInit(): void {
     this.getDataArcotel();
+    this.getDataArcotelContrato();
     this.getDataPanificadora();
     this.getDataPanificadora2();
+    this.getDataBomberos();
+
   }
 
 
@@ -98,6 +120,38 @@ export class DetalleClientesComponent implements OnInit {
         }
       })
     })
+  }
+
+  getDataArcotelContrato(){
+    this.activateRoute.paramMap.subscribe(params=>{
+      let cedula=+params.get('cedula');
+      this.api.getContratosArcotelByCedula(cedula).subscribe(response=>{
+        
+        this.datosArcotelContratos=response;
+        
+        this.datasource2.data=this.datosArcotelContratos;
+        this.datasource2.paginator=this.paginator2;
+        
+        console.log(this.datosArcotelContratos)
+      })
+    })
+
+  }
+
+  getDataBomberos(){
+    this.activateRoute.paramMap.subscribe(params=>{
+      let cedula=+params.get('cedula');
+      this.api.getServicioBomberoByCedula(cedula).subscribe(response=>{
+        
+      this.datosBombero=response;
+        
+        this.datasource3.data=this.datosBombero;
+        this.datasource3.paginator=this.paginator3;
+        
+        console.log(this.datosBombero)
+      })
+    })
+
   }
 
 

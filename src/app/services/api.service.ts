@@ -4,7 +4,9 @@ import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { ArcotelCliente } from '../models/arcotelCliente';
 import { Cliente } from '../models/cliente';
+import { ContratoArcotel } from '../models/contratoArcotel';
 import { detalleCliente } from '../models/detalleCliente';
+import { ServicioBombero } from '../models/servicioBombero';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +18,10 @@ private urlEndPoint2:string='http://www.panaderiasistema.somee.com/WCFproductos.
 private urlEndPoint3:string='http://panaderiasistema.somee.com/WCFproductos.svc/cliente'
 
 
+private urlEndPointBombero:string='http://bomberoscba.somee.com/Service1.svc/servicio';
+
 private arcotelEndPoint:string='http://arcoteln.somee.com/service1.svc/Devolver_Personas_Por_Cedula' 
+private arcotelEndPoint2:string='http://arcoteln.somee.com/Service1.svc/Devolver_Costo_Contrato_Servicio'
 
 
 private httpHeaders=new HttpHeaders({
@@ -40,5 +45,13 @@ private httpHeaders=new HttpHeaders({
 
   getClienteArcotelByCedula(cedula):Observable<ArcotelCliente[]>{
     return this.http.get<ArcotelCliente[]>(`${this.arcotelEndPoint}/${cedula}`)
+  }
+
+  getContratosArcotelByCedula(cedula):Observable<ContratoArcotel[]>{
+    return this.http.get<ContratoArcotel[]>(`${this.arcotelEndPoint2}/${cedula}`)
+  }
+
+  getServicioBomberoByCedula(cedula):Observable<ServicioBombero[]>{
+    return this.http.get<ServicioBombero[]>(`${this.urlEndPointBombero}/${cedula}`)
   }
 }
